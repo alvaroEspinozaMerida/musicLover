@@ -2,6 +2,7 @@ package com.elena_alvaro.musicLover.model;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +22,37 @@ public class User{
     private String bio;
     private String profilePic;
     private String location;
-    private String website;
     private String spotify;
-
     @OneToMany
     private List <User> friends;
+
+    @ElementCollection
+    private List<String> favoriteArtist;
+    @ElementCollection
+    private List<String>  favoriteSongs;
+
+
+    public List<String> getFavoriteArtist() {
+        return favoriteArtist;
+    }
+
+    public void setFavoriteArtist(List<String> favoriteArtist) {
+        this.favoriteArtist = favoriteArtist;
+    }
+
+    public List<String> getFavoriteSongs() {
+        return favoriteSongs;
+    }
+
+    public void setFavoriteSongs(List<String> favoriteSongs) {
+        this.favoriteSongs = favoriteSongs;
+    }
+
+    public User(long userId, String username, String email) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+    }
 
     public User() {
 
@@ -43,23 +70,16 @@ public class User{
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
-        this.friends = friends;
+    public void addFriend(User newFriend){
+        if (!friends.contains(newFriend)) {
+            friends.add(newFriend);
+        }
     }
 
 
-    public User(long userId, String username, String password, String email, String firstName, String lastName, String bio, String profilePic, String location, String website, String spotify) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.bio = bio;
-        this.profilePic = profilePic;
-        this.location = location;
-        this.website = website;
-        this.spotify = spotify;
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
     }
 
     // not using getters and setters for the user id because the database will generate it
@@ -128,14 +148,6 @@ public class User{
         this.location = location;
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
     public String getSpotify() {
         return spotify;
     }
@@ -146,7 +158,7 @@ public class User{
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", bio=" + bio + ", profilePic=" + profilePic + ", location=" + location + ", website=" + website + ", spotify=" + spotify + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", bio=" + bio + ", profilePic=" + profilePic + ", location=" + location +", spotify=" + spotify + '}';
     }
 
 
